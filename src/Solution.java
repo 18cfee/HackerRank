@@ -7,7 +7,7 @@ import java.util.regex.*;
 public class Solution {
 
     static long  getWays(int n, int indexPast){
-        long storeN = store[n];
+        long storeN = store[n][indexPast];
         if(storeN != -1) return storeN;
         if(indexPast == m) {
             return 0;
@@ -18,15 +18,15 @@ public class Solution {
             else return 0;
         }
         int nextIndex = indexPast + 1;
-        int totWays = 0;
+        long totWays = 0;
         for(int i = n; i >=0; i-=coin){
-            totWays += store[i] = getWays(i,nextIndex);
+            totWays += store[i][nextIndex] = getWays(i,nextIndex);
         }
         return totWays;
     }
 
     static Integer[] c;
-    static long[] store;
+    static long[][] store;
     static int m;
 
     public static void main(String[] args) {
@@ -34,9 +34,11 @@ public class Solution {
         int n = in.nextInt();
         m = in.nextInt();
         c = new Integer[m];
-        store = new long[n + 1];
-        Arrays.fill(store,-1);
-        store[0] = 1;
+        store = new long[n + 1][m+1];
+        for(int i = 1; i < n+1; i++){
+            Arrays.fill(store[i],-1);
+        }
+        Arrays.fill(store[0],1);
         for(int c_i=0; c_i < m; c_i++){
             c[c_i] = in.nextInt();
         }
