@@ -6,19 +6,37 @@ public class Solution {
         Scanner in = new Scanner(new File("sol.in"));
         //Scanner in = new Scanner(System.in);
         int n = in.nextInt();
-        int[] a = new int[n];
-        for(int a_i=0; a_i < n; a_i++){
-            a[a_i] = in.nextInt();
+        List<Integer> scores = new ArrayList<Integer>(n);
+        int currentS = in.nextInt();
+        scores.add(currentS);
+        for(int scores_i=0; scores_i < n - 1; scores_i++){
+            int newS = in.nextInt();
+            if(newS != currentS){
+                scores.add(newS);
+                currentS = newS;
+            }
         }
-        int[] b = new int[101];
-        for(int i = 0; i < n; i++){
-            b[a[i]]++;
-            b[a[i] + 1]++;
+        int m = in.nextInt();
+        int[] alice = new int[m];
+        for(int alice_i=0; alice_i < m; alice_i++){
+            alice[alice_i] = in.nextInt();
         }
-        int max = 0;
-        for(int i = 0; i < 101; i++){
-            max = Math.max(max,b[i]);
+        int score = 0;
+        int tot = scores.size();
+        int curInd = tot - 1;
+
+        for(int i = 0; i < m; i++){
+            score = alice[i];
+            while(curInd >= 0 && score > scores.get(curInd)){
+                curInd--;
+            }
+            if(curInd == -1) {
+                System.out.println(1);
+            }
+            else if(score >= scores.get(curInd)) System.out.println(curInd + 1);
+            else{
+                System.out.println(curInd + 2);
+            }
         }
-        System.out.println(max);
     }
 }
