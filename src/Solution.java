@@ -7,16 +7,9 @@ public class Solution {
         Scanner in = new Scanner(new File("sol.in"));
         //Scanner in = new Scanner(System.in);
         int n = in.nextInt();
-        int[] socks = new int[101];
-        for(int i = 0; i < n; i++){
-            socks[in.nextInt()]++;
-        }
-        int tot = 0;
-        for(int i = 0; i < 101; i++){
-            tot += socks[i]/2;
-        }
+        int p = in.nextInt();
+        n = n - n%2;
+        int tot = Math.min((p)/2, (n - p + 1)/2);
         System.out.println(tot);
-        int a = 003;
-
     }
 }
