@@ -11,14 +11,8 @@ public class Solution {
             in = new Scanner(new File("sol.in"));
         }
         /////////////////////// Scannnner
-        int t = in.nextInt();
-        for(int j = 0;j < t; j++){
-            int n = in.nextInt();
-            int m = in.nextInt();
-            int s = in.nextInt();
-            int tot = (m+s -1)%n;
-            if(tot == 0) tot = n;
-            System.out.println(tot);
-        }
+        String input = in.next();
+        long tot = input.isEmpty() ? 0 : 1 + input.chars().filter(Character::isUpperCase).count();
+        System.out.println(tot);
     }
 }
