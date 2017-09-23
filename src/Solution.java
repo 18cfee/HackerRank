@@ -13,18 +13,14 @@ public class Solution {
         /////////////////////// Scannnner
         int n = in.nextInt();
         for(int i = 0; i < n; i++){
-            int cycles = in.nextInt();
-            int b = 0;
-            int tot = 1;
-            while(b < cycles){
-                tot *= 2;
-                b++;
-                if(b < cycles){
-                    tot++;
-                }
-                b++;
+            int stud = in.nextInt();
+            int thresh = in.nextInt();
+            for(int j = 0; j < stud; j++){
+                if(in.nextInt() <= 0)thresh--;
             }
-            System.out.println(tot);
+            String hi = "YES";
+            if(thresh <= 0) hi = "NO";
+            System.out.println(hi);
         }
 
     }
