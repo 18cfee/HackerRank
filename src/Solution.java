@@ -12,20 +12,18 @@ public class Solution {
         }
         /////////////////////// Scannnner
         int n = in.nextInt();
-        int m = in.nextInt();
-        int[] stat = new int[m];
-        for(int i = 0; i < m; i++){
+        int[] stat = new int[n+1];
+        for(int i = 1; i <= n; i++){
             stat[i] = in.nextInt();
         }
-        Arrays.sort(stat);
-        int difMax = 0;
-        for(int i = 1; i < m; i++){
-            int cru = stat[i] - stat[i -1];
-            difMax = Math.max(cru,difMax);
+        for(int i = 1; i <= n; i++){
+            int a = 0;
+            for(int j= 1; j <= n; j++){
+                if(stat[j] == i) a = j;
+            }
+            for(int j= 1; j <= n; j++){
+                if(stat[j] == a) System.out.println(j);
+            }
         }
-        difMax /=2;
-        difMax = Math.max(difMax,stat[0]);
-        difMax = Math.max(difMax,n - 1 - stat[m-1]);
-        System.out.println(difMax);
     }
 }
