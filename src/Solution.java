@@ -11,19 +11,22 @@ public class Solution {
             in = new Scanner(new File("sol.in"));
         }
         /////////////////////// Scannnner
-        int n = in.nextInt();
-        int[] stat = new int[n+1];
-        for(int i = 1; i <= n; i++){
-            stat[i] = in.nextInt();
+        String n = in.next();
+        int k = in.nextInt();
+        int print = (int)superDigit(sumDigits(n)*k);
+        System.out.println(print);
+    }
+
+    public static long superDigit(long x){
+        long sum = sumDigits(Long.toString(x));
+        return (sum < 10) ? sum: superDigit(sum);
+    }
+
+    public static long sumDigits(String x){
+        int tot = 0;
+        for(int i = 0; i < x.length(); i++){
+            tot += Integer.parseInt(x.substring(i,i+1));
         }
-        for(int i = 1; i <= n; i++){
-            int a = 0;
-            for(int j= 1; j <= n; j++){
-                if(stat[j] == i) a = j;
-            }
-            for(int j= 1; j <= n; j++){
-                if(stat[j] == a) System.out.println(j);
-            }
-        }
+        return tot;
     }
 }
