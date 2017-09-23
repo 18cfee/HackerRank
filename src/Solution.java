@@ -11,22 +11,43 @@ public class Solution {
             in = new Scanner(new File("sol.in"));
         }
         /////////////////////// Scannnner
-        String n = in.next();
-        int k = in.nextInt();
-        int print = (int)superDigit(sumDigits(n)*k);
-        System.out.println(print);
-    }
+        int t = in.nextInt();
+        for(int i = 0; i < t; i++){
+            int n = in.nextInt();
+            int tot = 0;
+            int[] array = new int[n + 1];
+            for(int j= 1; j < n+1; j++){
+                int cur = in.nextInt();
+                array[j] = cur;
+                if(cur > j + 2 && tot != -1){
+                    tot = -1;
+                    System.out.println("Too chaotic");
+                }
 
-    public static long superDigit(long x){
-        long sum = sumDigits(Long.toString(x));
-        return (sum < 10) ? sum: superDigit(sum);
-    }
-
-    public static long sumDigits(String x){
-        int tot = 0;
-        for(int i = 0; i < x.length(); i++){
-            tot += Integer.parseInt(x.substring(i,i+1));
+            }
+            if(tot != -1) {
+                for(int j= n; j > 0; j--){
+                    int cur = array[j];
+                    if(j + 2 == cur){
+                        tot +=2;
+                        array[j] = array[j+1];
+                        array[j+1] = array[j+2];
+                        if(array[j+1] < array[j]){
+                            int temp = array[j];
+                            array[j] = array[j+1];
+                            tot++;
+                            array[j+1] = temp;
+                        }
+                    } else if(j + 1 == cur){
+                        tot+=1;
+                        array[j] = array[j+1];
+                    }
+                }
+                //check last little bit
+                if(array[1] > array[2]) tot++;
+                System.out.println(tot);
+            }
         }
-        return tot;
     }
+
 }
