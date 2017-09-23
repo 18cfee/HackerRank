@@ -10,32 +10,18 @@ public class Solution {
         }
         /////////////////////// Scannnner
         int n = in.nextInt();
-        int m = in.nextInt();
-        int[] n1 = new int[n];
-        int nMAx = 0;
+        int[] n1 = new int[6];
         for(int i = 0; i < n; i++){
-            int input = in.nextInt();
-            n1[i] = input;
-            nMAx = Math.max(input, nMAx);
+            n1[in.nextInt()]++;
         }
-        int[] m1 = new int[m];
-        int mMAx = 200;
-        for(int i = 0; i < m; i++){
-            int input = in.nextInt();
-            m1[i] = input;
-            mMAx = Math.min(input, mMAx);
-        }
-        int tot = 0;
-        for(int i = nMAx; i <= mMAx; i++){
-            boolean insert = true;
-            for(int j = 0; j < n; j++){
-                if(i%n1[j]!=0) insert = false;
+        int max = 0;
+        int index = 0;
+        for(int i = 1; i < 6; i++){
+            if(n1[i] > max){
+                max = n1[i];
+                index = i;
             }
-            for(int j = 0; j < m; j++){
-                if(m1[j]%i!=0) insert = false;
-            }
-            if(insert) tot++;
         }
-        System.out.println(tot);
+        System.out.println(index);
     }
 }
