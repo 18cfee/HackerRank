@@ -8,29 +8,33 @@ public class Solution {
         if(f.exists() && !f.isDirectory()) {
             in = new Scanner(new File("sol.in"));
         }
-        int s = in.nextInt();
-        int t = in.nextInt();
-        int a = in.nextInt();
-        int b = in.nextInt();
-        int m = in.nextInt();
-        int n = in.nextInt();
-        int[] apple = new int[m];
-        for(int apple_i=0; apple_i < m; apple_i++){
-            apple[apple_i] = in.nextInt();
+        /////////////////////// Scannnner
+        int x1 = in.nextInt();
+        int v1 = in.nextInt();
+        int x2 = in.nextInt();
+        int v2 = in.nextInt();
+        String result = kangaroo(x1, v1, x2, v2);
+        System.out.println(result);
+    }
+    static String kangaroo(int x1, int v1, int x2, int v2) {
+        if(x1 != x2 && v1 == v2) return "NO";
+        if(x1 > x2){
+            while(x1 >= x2){
+                if(x1 == x2){
+                    return "YES";
+                }
+                x1 += v1;
+                x2 += v2;
+            }
+        }else{
+            while(x2 >= x1){
+                if(x1 == x2){
+                    return "YES";
+                }
+                x1 += v1;
+                x2 += v2;
+            }
         }
-        int[] orange = new int[n];
-        for(int orange_i=0; orange_i < n; orange_i++){
-            orange[orange_i] = in.nextInt();
-        }
-        int apples = 0;
-        for(int i = 0; i < m; i++){
-            if(t >= a + apple[i] && a + apple[i] >= s) apples++;
-        }
-        int oranges = 0;
-        for(int i = 0; i < n; i++){
-            if(t >= orange[i] + b && orange[i] + b >= s) oranges++;
-        }
-        System.out.println(apples);
-        System.out.println(oranges);
+        return "NO";
     }
 }
