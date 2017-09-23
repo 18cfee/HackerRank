@@ -11,13 +11,14 @@ public class Solution {
             in = new Scanner(new File("sol.in"));
         }
         /////////////////////// Scannnner
-        int n = in.nextInt();
-        int initial = 2;
-        int total = 2;
-        for(int i = 1; i < n; i++){
-            initial = (initial*3)/2;
-            total += initial;
+        int t = in.nextInt();
+        for(int j = 0;j < t; j++){
+            int n = in.nextInt();
+            int m = in.nextInt();
+            int s = in.nextInt();
+            int tot = (m+s -1)%n;
+            if(tot == 0) tot = n;
+            System.out.println(tot);
         }
-        System.out.println(total);
     }
 }
