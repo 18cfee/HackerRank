@@ -12,18 +12,20 @@ public class Solution {
         }
         /////////////////////// Scannnner
         int n = in.nextInt();
-        int k = in.nextInt();
-        int[] cost = new int[n];
-        int sum = 0;
         for(int i = 0; i < n; i++){
-            cost[i] = in.nextInt();
-            sum += cost[i];
+            int cycles = in.nextInt();
+            int b = 0;
+            int tot = 1;
+            while(b < cycles){
+                tot *= 2;
+                b++;
+                if(b < cycles){
+                    tot++;
+                }
+                b++;
+            }
+            System.out.println(tot);
         }
-        int pay = in.nextInt();
-        k = cost[k];
-        int should = (sum - k)/2;
-        if(should == pay) System.out.println("Bon Appetit");
-        else System.out.println(pay - should);
 
     }
 }
