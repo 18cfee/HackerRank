@@ -11,17 +11,22 @@ public class Solution {
             in = new Scanner(new File("sol.in"));
         }
         /////////////////////// Scannnner
-        int n = in.nextInt();
-        for(int i = 0; i < n; i++){
-            int stud = in.nextInt();
-            int thresh = in.nextInt();
-            for(int j = 0; j < stud; j++){
-                if(in.nextInt() <= 0)thresh--;
-            }
-            String hi = "YES";
-            if(thresh <= 0) hi = "NO";
-            System.out.println(hi);
+        int i = in.nextInt();
+        int j = in.nextInt();
+        int k = in.nextInt();
+        int count = 0;
+        for(; i <=j; i++){
+            if(Math.abs(i - reversed(i))%k == 0) count++;
         }
+        System.out.println(count);
+    }
+    public static int reversed(int x){
+        while(x%10 == 0) x/=10;
 
+        StringBuilder in = new StringBuilder();
+        in.append(Integer.toString(x));
+        in.reverse();
+        x = Integer.parseInt(in.toString());
+        return x;
     }
 }
