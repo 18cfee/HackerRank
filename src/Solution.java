@@ -1,4 +1,6 @@
 import java.io.*;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.*;
 
 public class Solution {
@@ -10,18 +12,18 @@ public class Solution {
         }
         /////////////////////// Scannnner
         int n = in.nextInt();
-        int[] n1 = new int[6];
+        int k = in.nextInt();
+        int[] cost = new int[n];
+        int sum = 0;
         for(int i = 0; i < n; i++){
-            n1[in.nextInt()]++;
+            cost[i] = in.nextInt();
+            sum += cost[i];
         }
-        int max = 0;
-        int index = 0;
-        for(int i = 1; i < 6; i++){
-            if(n1[i] > max){
-                max = n1[i];
-                index = i;
-            }
-        }
-        System.out.println(index);
+        int pay = in.nextInt();
+        k = cost[k];
+        int should = (sum - k)/2;
+        if(should == pay) System.out.println("Bon Appetit");
+        else System.out.println(pay - should);
+
     }
 }
