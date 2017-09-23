@@ -9,32 +9,33 @@ public class Solution {
             in = new Scanner(new File("sol.in"));
         }
         /////////////////////// Scannnner
-        int x1 = in.nextInt();
-        int v1 = in.nextInt();
-        int x2 = in.nextInt();
-        int v2 = in.nextInt();
-        String result = kangaroo(x1, v1, x2, v2);
-        System.out.println(result);
-    }
-    static String kangaroo(int x1, int v1, int x2, int v2) {
-        if(x1 != x2 && v1 == v2) return "NO";
-        if(x1 > x2){
-            while(x1 >= x2){
-                if(x1 == x2){
-                    return "YES";
-                }
-                x1 += v1;
-                x2 += v2;
-            }
-        }else{
-            while(x2 >= x1){
-                if(x1 == x2){
-                    return "YES";
-                }
-                x1 += v1;
-                x2 += v2;
-            }
+        int n = in.nextInt();
+        int m = in.nextInt();
+        int[] n1 = new int[n];
+        int nMAx = 0;
+        for(int i = 0; i < n; i++){
+            int input = in.nextInt();
+            n1[i] = input;
+            nMAx = Math.max(input, nMAx);
         }
-        return "NO";
+        int[] m1 = new int[m];
+        int mMAx = 200;
+        for(int i = 0; i < m; i++){
+            int input = in.nextInt();
+            m1[i] = input;
+            mMAx = Math.min(input, mMAx);
+        }
+        int tot = 0;
+        for(int i = nMAx; i <= mMAx; i++){
+            boolean insert = true;
+            for(int j = 0; j < n; j++){
+                if(i%n1[j]!=0) insert = false;
+            }
+            for(int j = 0; j < m; j++){
+                if(m1[j]%i!=0) insert = false;
+            }
+            if(insert) tot++;
+        }
+        System.out.println(tot);
     }
 }
