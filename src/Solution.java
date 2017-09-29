@@ -3,6 +3,15 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.*;
 
+class Direction{
+    public int iadd;
+    public int jadd;
+    public Direction(int i, int j){
+        this.iadd = i;
+        this.jadd = j;
+    }
+}
+
 public class Solution {
     static int[][] array;
     static int n;
@@ -14,93 +23,74 @@ public class Solution {
         }
         /////////////////////// Scannnner
         n = in.nextInt();
-        int m = in.nextInt();
+        String dir = in.next();
+        int iS = in.nextInt();
+        int jS = in.nextInt();
         array = new int[n][n];
-        for(int a0 = 0; a0 < m; a0++){
-            int x = in.nextInt();
-            int y = in.nextInt();
-            int w = in.nextInt();
-            insert(x,y,w);
+        Direction up = new Direction(1, 0);
+        Direction left = new Direction(0, -1);
+        Direction down = new Direction(-1, 0);
+        Direction right = new Direction(0, 1);
+        List<Direction> directs = new ArrayList<Direction>(4);
+        if(dir.equals("w")){
+            directs.add(left);
+            directs.add(up);
+            directs.add(down);
+            directs.add(right);
+        } else if(dir.equals("e")){
+            directs.add(right);
+            directs.add(up);
+            directs.add(down);
+            directs.add(left);
+        } else if(dir.equals("s")){
+            directs.add(up);
+            directs.add(right);
+            directs.add(left);
+            directs.add(down);
+        } else if(dir.equals("n")){
+            directs.add(down);
+            directs.add(right);
+            directs.add(left);
+            directs.add(up);
         }
-
-        /////////////////////// Main End\\
-        int max = 0;
-        for(int i = 0; i < n; i++){
-            for(int j= 0; j < n; j++){
-                max = Math.max(array[i][j], max);
+        int count = 1;
+        int upper = n*n;
+        while(count < upper){
+            array[iS][jS] = count;
+            for(int i = 0; i < 4; i++){
+                Direction cur = directs.get(i);
+                if(tryS(iS+cur.iadd,jS+cur.jadd)){
+                    iS +=cur.iadd;
+                    jS +=cur.jadd;
+                    count++;
+                    break;
+                }
             }
         }
-        System.out.println(max);
-        System.out.println(Arrays.deepToString(array));
+        array[iS][jS] = count;
+        printArray(array);
+        /////////////////////// Main End\\
         in.close();
     }
-    public static void insert(int x, int y, int w){
-        int x0 = x;
-        int upper = x0;
-        int y0 = y;
-        int w0 = w;
-        array[x][y] -=w;
-        while( y0 >= 0 && w0 > 0){
-            if(x0 < 0) x0 = 0;
-            if(upper > n -1) upper = n-1;
-            for(int i = x0; i <= upper; i++){
-                array[i][y0] += w0;
-            }
-            y0--;
-            x0--;
-            upper++;
-            w0--;
-        }
-        y0 = y;
-        x0 = x;
-        upper = x0;
-        w0 = w;
-        while( y0 < n && w0 > 0){
-            if(x0 < 0) x0 = 0;
-            if(upper > n -1) upper = n-1;
-            for(int i = x0; i <= upper; i++){
-                array[i][y0] += w0;
-            }
-            y0++;
-            x0--;
-            upper++;
-            w0--;
-        }
 
-        //right
-        y0 = y;
-        upper = y0;
-        x0 = x + 1;
-        w0 = w -1;
-        while( x0 < n && w0 > 0){
-            if(y0 < 0) y0 = 0;
-            if(upper > n -1) upper = n-1;
-            for(int i = y0; i <= upper; i++){
-                array[x0][i] += w0;
-            }
-            y0--;
-            x0++;
-            upper++;
-            w0--;
-        }
-        //left
-        y0 = y;
-        upper = y0;
-        x0 = x - 1;
-        w0 = w -1;
-        while(x0 >= 0 && w0 > 0){
-            if(y0 < 0) y0 = 0;
-            if(upper > n -1) upper = n-1;
-            for(int i = y0; i <= upper; i++){
-                array[x0][i] += w0;
-            }
-            y0--;
-            x0--;
-            upper++;
-            w0--;
-        }
+    public static boolean tryS(int i, int j){
+        if(0 <= i && 0 <= j && i <n && j <n && array[i][j] == 0){
+            return true;
+        }else return false;
     }
 
+    //////////////////////////////////Print 2D array/////////////////////////////////////////////
+    public static void printArray(int[][] thatAr){
+        int nnn = thatAr.length;
+        for(int i = 0; i < nnn; i++){
+            int[] current = thatAr[i];
+            for(int j= 0; j < n; j++){
+                System.out.print(current[j] + " ");
+            }
+            System.out.println();
+        }
+    }
+    /////////////////////////////////////////////////////////////////////////////////////////////
 
     //////////////////////////////// Reverse an Int /////////////////////////////////////////////
     public static int reverseInt(int x){
