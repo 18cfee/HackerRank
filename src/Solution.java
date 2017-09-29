@@ -16,90 +16,23 @@ public class Solution {
         n = in.nextInt();
         int m = in.nextInt();
         array = new int[n][n];
-        for(int a0 = 0; a0 < m; a0++){
-            int x = in.nextInt();
-            int y = in.nextInt();
-            int w = in.nextInt();
-            insert(x,y,w);
-        }
 
         /////////////////////// Main End\\
-        int max = 0;
-        for(int i = 0; i < n; i++){
-            for(int j= 0; j < n; j++){
-                max = Math.max(array[i][j], max);
-            }
-        }
-        System.out.println(max);
-        System.out.println(Arrays.deepToString(array));
         in.close();
     }
-    public static void insert(int x, int y, int w){
-        int x0 = x;
-        int upper = x0;
-        int y0 = y;
-        int w0 = w;
-        array[x][y] -=w;
-        while( y0 >= 0 && w0 > 0){
-            if(x0 < 0) x0 = 0;
-            if(upper > n -1) upper = n-1;
-            for(int i = x0; i <= upper; i++){
-                array[i][y0] += w0;
-            }
-            y0--;
-            x0--;
-            upper++;
-            w0--;
-        }
-        y0 = y;
-        x0 = x;
-        upper = x0;
-        w0 = w;
-        while( y0 < n && w0 > 0){
-            if(x0 < 0) x0 = 0;
-            if(upper > n -1) upper = n-1;
-            for(int i = x0; i <= upper; i++){
-                array[i][y0] += w0;
-            }
-            y0++;
-            x0--;
-            upper++;
-            w0--;
-        }
 
-        //right
-        y0 = y;
-        upper = y0;
-        x0 = x + 1;
-        w0 = w -1;
-        while( x0 < n && w0 > 0){
-            if(y0 < 0) y0 = 0;
-            if(upper > n -1) upper = n-1;
-            for(int i = y0; i <= upper; i++){
-                array[x0][i] += w0;
+    //////////////////////////////////Print 2D array/////////////////////////////////////////////
+    public static void printArray(int[][] thatAr){
+        int nnn = thatAr.length;
+        for(int i = 0; i < nnn; i++){
+            int[] current = thatAr[i];
+            for(int j= 0; j < current.length; j++){
+                System.out.print(current[j] + " ");
             }
-            y0--;
-            x0++;
-            upper++;
-            w0--;
-        }
-        //left
-        y0 = y;
-        upper = y0;
-        x0 = x - 1;
-        w0 = w -1;
-        while(x0 >= 0 && w0 > 0){
-            if(y0 < 0) y0 = 0;
-            if(upper > n -1) upper = n-1;
-            for(int i = y0; i <= upper; i++){
-                array[x0][i] += w0;
-            }
-            y0--;
-            x0--;
-            upper++;
-            w0--;
+            System.out.println();
         }
     }
+    /////////////////////////////////////////////////////////////////////////////////////////////
 
 
     //////////////////////////////// Reverse an Int /////////////////////////////////////////////
