@@ -11,6 +11,14 @@ public class Solution {
             in = new Scanner(new File("sol.in"));
         }
         /////////////////////// Scannnner
+        String input = in.next();
+        int a = Integer.parseInt(input.substring(0,1));
+        int b = Integer.parseInt(input.substring(2,3));
+        if(input.substring(1,2).equals("-")){
+            System.out.println(a-b);
+        }else{
+            System.out.println(a+b);
+        }
 
         /////////////////////// Main End
     }
