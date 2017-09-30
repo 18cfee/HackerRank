@@ -21,7 +21,13 @@ public class Solution {
         in.close();
     }
 
-    //////////////////////////////////Print 2D array/////////////////////////////////////////////
+    ////////////////////////////////////3-Way Max////////////////////////////////////////////////
+    public static int max(int aa, int bb, int cc){
+        return Math.max(aa,Math.max(bb,cc));
+    }
+    /////////////////////////////////////////////////////////////////////////////////////////////
+
+    //////////////////////////////////Print array/////////////////////////////////////////////
     public static void printArray(int[][] thatAr){
         int nnn = thatAr.length;
         for(int i = 0; i < nnn; i++){
@@ -31,6 +37,22 @@ public class Solution {
             }
             System.out.println();
         }
+    }
+
+    public static void printArray(int[] thatAr){
+        int nnn = thatAr.length;
+        for(int i = 0; i < nnn; i++){
+            System.out.print(thatAr[i] + " ");
+        }
+        System.out.println();
+    }
+
+    public static void printList(List<Integer> thatAr){
+        int nnn = thatAr.size();
+        for(int i = 0; i < nnn; i++){
+            System.out.print(thatAr.get(i) + " ");
+        }
+        System.out.println();
     }
     /////////////////////////////////////////////////////////////////////////////////////////////
 
