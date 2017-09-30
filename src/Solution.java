@@ -9,7 +9,8 @@ public class Solution {
     static int n;
     static List<List<Integer>> graph;
     static HashMap<Integer,List<HashSet<Integer>>> map = new HashMap<Integer, List<HashSet<Integer>>>();
-    static SortedSet<Integer> tree = new TreeSet<Integer>(map.keySet());
+    static SortedSet<Integer> tree;
+    static boolean order = false;
     public static void main(String[] args) throws FileNotFoundException {
         File f = new File("sol.in");
         Scanner in = new Scanner(System.in);
@@ -56,6 +57,136 @@ public class Solution {
         in.close();
     }
 
+    public static void makeSet(HashSet<Integer> set, int node, int color){
+        List<Integer> edgeL = graph.get(node);
+        for(Integer e : edgeL){
+            int[] edge = edges[e];
+            if(edge[2] == color && !set.contains(e)){
+                set.add(e);
+                int nnode = edge[0];
+                if(node == nnode) nnode = edge[1];
+                makeSet(set,nnode,color);
+            }
+        }
+    }
+
+    public static void fixOld(int[] edge, int oldC){
+        // Make a set of both sides
+        HashSet<Integer> first = new HashSet<Integer>();
+        int node1 = edge[0];
+        int node2 = edge[1];
+        // The first to exsit will stay in the same spot
+        makeSet(first,node1,oldC);
+        // the second will do to a new spot - edge group must be updated
+        HashSet<Integer> sec = new HashSet<Integer>();
+        makeSet(sec,node2,oldC);
+        if(sec.size() > 0 && first.size() > 0){
+            List<HashSet<Integer>> list = map.get(oldC);
+            list.add(sec);
+            int update = list.size()-1;
+            for(Integer e : sec){
+                edges[e][3] = update;
+            }
+        }
+        else if(sec.size() == 0 && first.size() == 0){
+            List<HashSet<Integer>> list = map.get(oldC);
+            int spot = edge[3];
+            list.get(spot).clear();
+        }
+    }
+
+    public static HashSet<Integer> getSet(int node, int color){
+        List<Integer> nodeE = graph.get(node);
+        for(Integer e: nodeE){
+            if(edges[e][2] == color){
+                set1Spot = edges[e][3];
+                return map.get(color).get(edges[e][3]);
+            }
+        }
+        return null;
+    }
+
+    static int set1Spot = 0;
+
+    public static void fixNew(int[] edgeEdit,int edge, int color){
+        int node1 = edgeEdit[0];
+        int node2 = edgeEdit[1];
+        if (!map.containsKey(color)) { // if the color is new, then we do not need to look at other edges
+            map.put(color, new ArrayList<HashSet<Integer>>());
+            HashSet<Integer> e = new HashSet<Integer>();
+            e.add(edge);
+            map.get(color).add(e);
+            edgeEdit[3] = map.get(color).size() - 1;
+        } else {
+            HashSet<Integer> set1 = getSet(node1,color);
+            int set1S = set1Spot;
+            HashSet<Integer> set2 = getSet(node2,color);
+            int set2S = set1Spot;
+            edgeEdit[2] = color;
+            if(set1 == null && set2 == null){
+                HashSet<Integer> e = new HashSet<Integer>();
+                e.add(edge);
+                map.get(color).add(e);
+                edgeEdit[3] = map.get(color).size() - 1;
+            } else if(set1 == null){
+                set2.add(edge);
+                edgeEdit[3] = set2S;
+            } else if(set2 == null){
+                set1.add(edge);
+                edgeEdit[3] = set1S;
+            } else{ // Combine
+                set1.addAll(set2);
+                set1.add(edge);
+                edgeEdit[3] = set1S;
+                for(Integer e : set2){
+                    edges[e][3] = set1S;
+                }
+                set2.clear();
+            }
+        }
+    }
+
+    public static void change(int edge, int color){
+        order = false;
+        int[] edgeEdit = edges[edge];
+        int oldColor = edgeEdit[2];
+        edgeEdit[2] = color;
+        fixOld(edgeEdit,oldColor);
+        edgeEdit[2] = oldColor;
+        fixNew(edgeEdit,edge,color);
+    }
+
+    public static void runningSum(int low, int high){
+        if(order == false){
+            tree = new TreeSet<Integer>(map.keySet());
+            order = true;
+        }
+        int sum = 0;
+        Iterator<Integer> iter = tree.tailSet(low).iterator();
+        while (iter.hasNext()) {
+            Integer a = iter.next();
+            if(a > high) break;
+            List<HashSet<Integer>> current = map.get(a);
+            for(HashSet<Integer> i : current){
+                if(i != null){
+                    int k = i.size();
+                    sum += (k+1)*(k)/2;
+                }
+            }
+        }
+        System.out.println(sum);
+    }
+
+    public static void pEdge(int edge){
+        int p = 0;
+        int[] stat = edges[edge];
+        int color = stat[2];
+        int slot = stat[3];
+        p = map.get(color).get(slot).size();
+        p = (p+1)*p/2;
+        System.out.println(p);
+    }
+
     public static void init(int node, int pColor, int pSet){
         //array[node] = true; // checked
         List<Integer> edgesL = graph.get(node);
@@ -76,7 +207,7 @@ public class Solution {
                     curSet.add(e);
                     List<HashSet<Integer>> ofColor = map.get(color);
                     ofColor.add(curSet);
-                    colorAddedNow.put(e, ofColor.size() - 1);
+                    colorAddedNow.put(color, ofColor.size() - 1);
                     edges[e][3] = ofColor.size() - 1; // group it is in // pSet
                 } else {
                     List<HashSet<Integer>> ll = map.get(color);
@@ -87,32 +218,18 @@ public class Solution {
             }
         }
         for(Integer e : edgesL){
+            int[] edge = edges[e];
             if(array[e] == false) {
                 array[e] = true;
-                int[] edge = edges[e];
                 int newNode = edge[0]; // this and next line check both spots of edge
                 if (newNode == node) newNode = edge[1];
                 int newColor = edge[2];
                 int newPSet = edge[3];
                 init(newNode, newColor, newPSet);
             }
+
         }
         //////Recursion Part to go down tree
-    }
-
-    public static void change(int edge, int color){
-        int oldColor = edges[edge][2];
-        edges[edge][2] = color;
-    }
-
-    public static void runningSum(int low, int high){
-        int sum = 0;
-        System.out.println(sum);
-    }
-
-    public static void pEdge(int edge){
-        int p = 0;
-        System.out.println(p);
     }
 
 
