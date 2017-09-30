@@ -2,6 +2,7 @@ import java.io.*;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Solution {
     static int[][] array;
@@ -23,52 +24,57 @@ public class Solution {
             }
             n = n+1;
             array = new int[n][n];
-            int kCount = 0;
-            int same = 0;
-            int oneLess = 0;
             for(int i = 0; i < n; i++){
                 array[0][i] = 5000;
                 array[i][0] = 5000;
             }
+            List<Integer> stacks = new ArrayList<Integer>();
+            List<List<Integer>> vals = new ArrayList<List<Integer>>();
             for(int i = 1; i < n; i++){
                 String current = board[i-1];
                 for(int j = 1; j < n; j++){
                     char noe = current.charAt(j-1);
+                    List<Integer> set = new ArrayList<Integer>();
                     if(noe == 'X'){
                         array[i][j] = 5000;
                     } else{
-                        int min = Math.min(array[i-1][j],array[i-1][j-1]);
-                        min = Math.min(min,array[i][j-1]);
-                        if(min == 5000) min = -1;
-                        array[i][j] = min + 1;
+                        set.add(array[i-1][j-1]);
+                        set.add(array[i][j-1]);
+                        set.add(array[i-1][j]);
+                        int insert = 0;
+                        //set = set.stream().filter(x -> x < 5000).collect(Collectors.toList());
+                        while(set.contains(insert)){
+                            insert++;
+                        }
+                        array[i][j] = insert;
                     }
                     if(noe == 'K'){
-                        kCount += array[i][j];
-                        if(array[i][j] == array[i - 1][j]){
-                            same++;
-                        }
-                        if(array[i][j] == array[i][j - 1]){
-                            same++;
-                        }
-                        if(array[i][j] == (array[i - 1][j] + 1)){
-                            oneLess++;
-                        }
-                        if(array[i][j] == (array[i][j - 1] + 1)){
-                            oneLess++;
-                        }
-                        if(array[i][j] == (array[i - 1][j - 1] + 1)){
-                            oneLess++;
-                        }
+                        stacks.add(array[i][j]);
+                        vals.add(set);
                     }
                 }
             }
-            printArray(array);
-            if(kCount%2 == 0){
-                if(same == 0)System.out.println("LOSE");
-                else System.out.println("WIN " + same);
+            //printArray(array);
+            int ans = 0;
+            for(Integer i : stacks){
+                ans = ans ^ i;
+            }
+            if(ans == 0){
+                System.out.println("LOSE");
             } else{
-                if(oneLess == 0)System.out.println("LOSE");
-                else System.out.println("WIN " + oneLess);
+                int tot = 0;
+                int inc = 0;
+                for(Integer i : stacks){
+                    int beforeThis = i^ans;
+                    List<Integer> set = vals.get(inc);
+                    for(Integer j : set){
+                        if((beforeThis ^ j) == 0){
+                            tot++;
+                        }
+                    }
+                    inc++;
+                }
+                System.out.println("WIN " + tot);
             }
 
         }
