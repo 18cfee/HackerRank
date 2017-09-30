@@ -7,12 +7,8 @@ import java.util.stream.Collectors;
 public class Solution {
     static int[][] array;
     static int n;
-    public static void main(String[] args) throws FileNotFoundException {
-        File f = new File("sol.in");
+    public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
-        if (f.exists() && !f.isDirectory()) {
-            in = new Scanner(new File("sol.in"));
-        }
         /////////////////////// Scannnner
         int q = in.nextInt();
         for(int a0 = 0; a0 < q; a0++){
@@ -29,28 +25,32 @@ public class Solution {
                 array[i][0] = 5000;
             }
             List<Integer> stacks = new ArrayList<Integer>();
-            List<List<Integer>> vals = new ArrayList<List<Integer>>();
+            List<int[]> vals = new ArrayList<int[]>();
             for(int i = 1; i < n; i++){
                 String current = board[i-1];
                 for(int j = 1; j < n; j++){
                     char noe = current.charAt(j-1);
-                    List<Integer> set = new ArrayList<Integer>();
                     if(noe == 'X'){
                         array[i][j] = 5000;
                     } else{
-                        set.add(array[i-1][j-1]);
-                        set.add(array[i][j-1]);
-                        set.add(array[i-1][j]);
+                        int[] speed = array[i-1];
+                        int a = (speed[j-1]);
+                        int b = (array[i][j-1]);
+                        int c = (speed[j]);
                         int insert = 0;
                         //set = set.stream().filter(x -> x < 5000).collect(Collectors.toList());
-                        while(set.contains(insert)){
+                        while(a == insert || b == insert || c == insert){
                             insert++;
                         }
                         array[i][j] = insert;
-                    }
-                    if(noe == 'K'){
-                        stacks.add(array[i][j]);
-                        vals.add(set);
+                        if(noe == 'K'){
+                            stacks.add(array[i][j]);
+                            int[] set = new int[3];
+                            set[0] = a;
+                            set[1] = b;
+                            set[2] = c;
+                            vals.add(set);
+                        }
                     }
                 }
             }
@@ -66,7 +66,7 @@ public class Solution {
                 int inc = 0;
                 for(Integer i : stacks){
                     int beforeThis = i^ans;
-                    List<Integer> set = vals.get(inc);
+                    int[] set = vals.get(inc);
                     for(Integer j : set){
                         if((beforeThis ^ j) == 0){
                             tot++;
