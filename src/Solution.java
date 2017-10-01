@@ -147,13 +147,16 @@ public class Solution {
     }
 
     public static void change(int edge, int color){
-        order = false;
         int[] edgeEdit = edges[edge];
         int oldColor = edgeEdit[2];
-        edgeEdit[2] = color;
-        fixOld(edgeEdit,oldColor);
-        edgeEdit[2] = oldColor;
-        fixNew(edgeEdit,edge,color);
+        if(oldColor != color){
+            order = false;
+
+            edgeEdit[2] = color;
+            fixOld(edgeEdit,oldColor);
+            edgeEdit[2] = oldColor;
+            fixNew(edgeEdit,edge,color);
+        }
     }
 
     public static void runningSum(int low, int high){
