@@ -80,6 +80,8 @@ public class Solution {
         // the second will do to a new spot - edge group must be updated
         HashSet<Integer> sec = new HashSet<Integer>();
         makeSet(sec,node2,oldC);
+        HashSet<Integer> old = map.get(oldC).get(edge[3]);
+        old.remove(oldC);
         if(sec.size() > 0 && first.size() > 0){
             List<HashSet<Integer>> list = map.get(oldC);
             list.add(sec);
@@ -185,8 +187,10 @@ public class Solution {
         int[] stat = edges[edge];
         int color = stat[2];
         int slot = stat[3];
-        p = map.get(color).get(slot).size();
-        p = (p+1)*p/2;
+        if(map.containsKey(color)){
+            p = map.get(color).get(slot).size();
+            p = (p+1)*p/2;
+        }
         System.out.println(p);
     }
 
