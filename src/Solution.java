@@ -16,7 +16,7 @@ public class Solution {
         n = in.nextInt();
         int m = in.nextInt();
         array = new int[n][n];
-
+        System.out.println(sumDigits("1234"));
         /////////////////////// Main End\\
         in.close();
     }
@@ -71,7 +71,7 @@ public class Solution {
     public static long sumDigits(String x){
         int tot = 0;
         for(int i = 0; i < x.length(); i++){
-            tot += Integer.parseInt(x.substring(i,i+1));
+            tot += x.charAt(i) - '0';
         }
         return tot;
     }
