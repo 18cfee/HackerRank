@@ -13,54 +13,14 @@ public class Solution {
             in = new Scanner(new File("sol.in"));
         }
         /////////////////////// Scannnner
-        int t = in.nextInt();
-        for(int i = 0; i < t; i++){
-            n = in.nextInt();
-            array = new int[n];
-            int sum = 0;
-            for(int j= 0; j < n; j++){
-                sum+= array[j] = in.nextInt();
-            }
-            if(sum == 0) System.out.println(n-1);
-            else{
-                System.out.println(rec(0,n-1));
-            }
-
+        int n = in.nextInt();
+        int[] array = new int[n];
+        for (int i = 0; i < n; i++) {
+            array[i] = in.nextInt();
         }
 
         /////////////////////// Main End\\
         in.close();
-    }
-
-    public static int rec(int a, int b){
-        if(a == b) return 0;
-        long left = array[a];
-        long right = array[b];
-        int a1= a;
-        int b1 = b;
-        boolean leftO = false;
-        while(a1 < b1 - 1){
-            if(left > right){
-                b1--;
-                right += array[b1];
-            }else if(left == right){
-                if(leftO) {
-                    b1--;
-                    right += array[b1];
-                    leftO = false;
-                }else{
-                    a1++;
-                    left += array[a1];
-                    leftO = true;
-                }
-            }
-            else{
-                a1++;
-                left += array[a1];
-            }
-        }
-        if(right == left) return 1+ Math.max(rec(a,a1),rec(b1,b));
-        else return 0;
     }
 
     ////////////////////////////////////3-Way Max////////////////////////////////////////////////
